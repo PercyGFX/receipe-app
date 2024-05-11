@@ -70,8 +70,8 @@ function Page() {
               <Image
                 src="/logo.png"
                 width={120}
-                height={100}
-                alt="Picture of the author"
+                height={0}
+                alt="Logo"
               />
             </div>
           </div>

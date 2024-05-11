@@ -73,12 +73,7 @@ function Page({}: Props) {
         <div className="bg-white w-11/12 md:w-7/12 lg:w-4/12 h-6/12 rounded-lg p-5">
           <div className=" flex justify-center">
             <div className=" my-5">
-              <Image
-                src="/logo.png"
-                width={120}
-                height={100}
-                alt="Picture of the author"
-              />
+              <Image src="/logo.png" width={120} height={0} alt="Logo" />
             </div>
           </div>
           <div className="flex justify-center">
@@ -92,7 +87,6 @@ function Page({}: Props) {
                       id="outlined-required"
                       label="First Name"
                       name="firstName"
-                     
                       value={formik.values.firstName}
                       onChange={formik.handleChange}
                       error={

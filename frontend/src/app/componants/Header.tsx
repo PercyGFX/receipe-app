@@ -24,7 +24,7 @@ function Header({}: Props) {
             src="/logo.png"
             width={120}
             height={0}
-            alt="Picture of the author"
+            alt="Logo"
           />
         </div>
         <div className="flex gap-x-6 uppercase">
