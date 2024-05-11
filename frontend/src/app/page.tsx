@@ -1,35 +1,75 @@
+"use client";
 import Header from "./componants/Header";
+import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 export default function Home() {
+  const [categories, setCategories] = useState([]);
+
+ // -------- fetch categories --------------------- //
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-categories`
+        );
+       
+        if (!response.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+
+        const data = await response.json();
+
+        console.log(data)
+        setCategories(data.data);
+      } catch (error: any) {
+        console.error("Error fetching categories:", error.message);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  console.log(categories);
+
+  
   return (
     <main className="">
       <Header />
       <div className="flex justify-center">
         <div className=" bg-[#fef8f9] w-10/12 h-lvh py-10 px-20">
           {/* categories */}
-          <div className="flex gap-x-5">
-            <Button
-              className=" px-10"
-              variant="outlined"
-              sx={{
-                padding: "12px 24px", // Adjust padding as desired
-                borderColor: "#fe5c84", // Border color
-                textTransform: "none",
-                color: "#fe5c84", // Text color
-                fontWeight: "bold", // Make text bold
-                borderRadius: "25px", // Make button more round
-                "&:hover": {
-                  backgroundColor: "#fe5c84", // Background color on hover
-                  color: "#fff", // Text color on hover
-                },
-              }}
-            >
-              Pork
-            </Button>
 
-            <Button
+          <div className="flex gap-x-5">
+            {categories && categories.length > 0 ? (
+              categories.map((category) => (
+                <div key={category.idCategory}>
+                  <Button
+                    className="px-10"
+                    variant="outlined"
+                    sx={{
+                      padding: "12px 24px", 
+                      borderColor: "#fe5c84", 
+                      textTransform: "none",
+                      color: "#fe5c84", 
+                      fontWeight: "bold", 
+                      borderRadius: "25px", 
+                      "&:hover": {
+                        backgroundColor: "#fe5c84", 
+                        color: "#fff", 
+                      },
+                    }}
+                  >
+                    {category.strCategory}
+                  </Button>
+                </div>
+              ))
+            ) : (
+              <div>Loading...</div>
+            )}
+
+            {/* <Button
               className=" shadow-none px-10"
               variant="contained"
               sx={{
@@ -47,7 +87,7 @@ export default function Home() {
               }}
             >
               Beef
-            </Button>
+            </Button> */}
           </div>
 
           {/* recipies */}
