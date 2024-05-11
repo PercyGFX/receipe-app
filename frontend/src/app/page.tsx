@@ -88,10 +88,16 @@ export default function Home() {
 
   useEffect(() => {
     if (selectedCategory) {
+      // const token = cookies.get("token"); 
       const fetchRecipes = async () => {
         try {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-recipes/${selectedCategory}`
+            `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-recipes/${selectedCategory}`,
+             {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
           );
           if (!response.ok) {
             throw new Error("Failed to fetch recipes");

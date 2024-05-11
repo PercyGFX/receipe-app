@@ -1,5 +1,6 @@
 import express from "express";
 const router = express.Router();
+import { jwtauthenticateToken } from "../middlewares/jwtcheck.js";
 
 import {
   getCategories,
@@ -15,7 +16,7 @@ router.get("/get-categories", getCategories);
 
 // get recipes by category
 
-router.get("/get-recipes/:categoryName", getReceipes);
+router.get("/get-recipes/:categoryName", jwtauthenticateToken, getReceipes);
 
 // get recipes by id
 
