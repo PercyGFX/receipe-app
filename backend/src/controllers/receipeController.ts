@@ -50,3 +50,33 @@ export const getReceipes = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+//------------- get receipes by id -------------------------------//
+export const getSingleReceipes = async (req: Request, res: Response) => {
+  try {
+    const { receipeId } = req.params;
+
+    const response = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${receipeId}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch recipes");
+    }
+
+    const data = await response.json();
+
+    if (!data.meals) {
+      res.status(500).json({ error: "Receipe Not Found" });
+      return;
+    }
+
+    res.json(data);
+  } catch (error: any) {
+    console.error("Error fetching recipes:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+;

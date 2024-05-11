@@ -9,3 +9,10 @@ export type ReceipeType = {
   idMeal: string
 };
 
+export type SingleReceipeType = {
+  strMeal: string;
+  strInstructions: string;
+  strYoutube: string;
+  strMealThumb: string;
+};
+
