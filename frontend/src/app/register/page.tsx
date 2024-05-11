@@ -70,7 +70,7 @@ function Page({}: Props) {
   return (
     <div>
       <div className="flex justify-center items-center rounded-md h-lvh">
-        <div className="bg-white w-4/12 h-6/12 rounded-lg p-5">
+        <div className="bg-white w-11/12 md:w-7/12 lg:w-4/12 h-6/12 rounded-lg p-5">
           <div className=" flex justify-center">
             <div className=" my-5">
               <Image
@@ -81,17 +81,18 @@ function Page({}: Props) {
               />
             </div>
           </div>
-          <div className=" flex justify-center">
-            <div>
+          <div className="flex justify-center">
+            <div className=" w-full lg:w-auto">
               <p className=" ml-2 my-2 text-2xl">Register</p>
               <form onSubmit={formik.handleSubmit}>
-                <div className="flex">
-                  <div className="flex flex-col mx-2 gap-3">
+                <div className="flex flex-col lg:flex-row w-full">
+                  <div className="flex flex-col mx-2 gap-3 mb-4 lg:mb-0">
                     <TextField
                       required
                       id="outlined-required"
                       label="First Name"
                       name="firstName"
+                     
                       value={formik.values.firstName}
                       onChange={formik.handleChange}
                       error={

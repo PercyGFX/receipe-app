@@ -64,7 +64,7 @@ function Page() {
   return (
     <div>
       <div className="flex justify-center items-center  rounded-md h-lvh">
-        <div className="bg-white w-3/12 h-6/12 rounded-lg p-5">
+        <div className="bg-white mx-2  h-6/12 rounded-lg p-5 lg:w-3/12">
           <div className=" flex justify-center">
             <div className=" my-5">
               <Image

@@ -230,14 +230,14 @@ export default function Home() {
         <div className=" bg-[#fef8f9] w-10/12 h-full py-10 px-20">
           {/* categories */}
 
-          <div className="flex gap-x-5">
+          <div className="flex lg:flex-row flex-wrap gap-x-5">
             {categories && categories.length > 0 ? (
               categories.map((category) => (
                 <div key={category.idCategory}>
                   {selectedCategory == category.strCategory ? (
                     <>
                       <Button
-                        className=" shadow-none px-10"
+                        className=" shadow-none px-10 mb-3 lg:mb:0"
                         variant="contained"
                         sx={{
                           padding: "12px 24px",
@@ -290,12 +290,12 @@ export default function Home() {
 
           {/* recipies */}
           <div className="mt-16">
-            <div className="grid grid-cols-5 gap-x-28 gap-y-16">
+            <div className="grid lg:grid-cols-5 gap-x-28 gap-y-16">
               {/* recipe card */}
               {recipes.length > 0 ? (
                 recipes.map((recipe, index) => (
                   <div key={index} className="">
-                    <div className="rounded-3xl bg-slate-500 w-full">
+                    <div className="rounded-3xl  w-full">
                       <Image
                         src={recipe.strMealThumb}
                         alt={recipe.strMeal}

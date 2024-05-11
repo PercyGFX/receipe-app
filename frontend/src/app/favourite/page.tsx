@@ -80,12 +80,12 @@ export default function Home() {
         <div className=" bg-[#fef8f9] w-10/12 h-lvh py-10 px-20">
           {/* recipies */}
           <div className="mt-16">
-            <div className="grid grid-cols-5 gap-x-28 gap-y-16">
+            <div className="grid lg:grid-cols-5 gap-x-28 gap-y-16">
               {/* recipe card */}
               {favourites.length > 0 ? (
                 favourites.map((favourite, index) => (
                   <div key={favourite._id} className="">
-                    <div className="rounded-3xl bg-slate-500 w-full">
+                    <div className="rounded-3xl  w-full">
                       <Image
                         src={favourite.thumbnail}
                         alt={favourite.title}
