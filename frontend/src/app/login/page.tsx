@@ -45,10 +45,10 @@ function Page() {
           const errorData = await response.json();
           throw new Error(errorData.message || "Something went wrong");
         } else {
-          toast.success("Login Succuess");
+          toast.success("Login Success");
           const data = await response.json();
           localStorage.setItem("token", data.data);
-          router.push('/')
+          router.push("/");
         }
       } catch (error: any) {
         toast.error(`Error: ${error.message}`);
@@ -117,7 +117,7 @@ function Page() {
           </form>
           <div className=" flex justify-center my-5 text-sm">
             <p>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/register">
                 <span className=" text-sky-800">Create an account</span>
               </Link>
