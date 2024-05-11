@@ -86,35 +86,43 @@ export const addToFavourites = async (req: Request, res: Response) => {
   try {
     const { userId, receipeId, thumbnail, title, category } = req.body;
 
-    // validations
+    // Validations
     if (!userId || !receipeId || !thumbnail || !title || !category) {
       return res
         .status(400)
-        .json({ error: "userId, receipeId, thumbnail, title are required" });
+        .json({
+          error:
+            "userId, receipeId, thumbnail, title, and category are required",
+        });
     }
 
-    // check if the user available
+    // Check if the user exists
     const user = await UserModel.findById(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // check if receipe already int he database
-    const existingFavourite = await FavouriteModel.findOne({ receipeId });
+    // Check if the recipe is already saved as a favourite for the user
+    const existingFavourite = await FavouriteModel.findOne({
+      user: userId,
+      receipeId,
+    });
+
     if (existingFavourite) {
       return res
         .status(400)
-        .json({ error: "This recipe is already in favourites" });
+        .json({ error: "This recipe is already in your favourites" });
     }
 
-    // create new
-    await FavouriteModel.create({
+    // Create a new favourite
+    const newFavourite = new FavouriteModel({
       receipeId,
       thumbnail,
       title,
       user: userId,
       category,
     });
+    await newFavourite.save();
 
     return res
       .status(201)
@@ -123,7 +131,7 @@ export const addToFavourites = async (req: Request, res: Response) => {
     console.error("Error adding to favourites:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
-}
+};
 
 // ---------------------------- getFavouritesbyUser ------------------------- //
 
