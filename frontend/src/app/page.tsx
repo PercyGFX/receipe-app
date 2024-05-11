@@ -9,6 +9,7 @@ import { ReceipeType } from "./Utils/types";
 import { SingleReceipeType } from "./Utils/types";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 
 export default function Home() {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -26,9 +27,15 @@ export default function Home() {
   // open single listing
   const handleOpen = (id: string) => {
     const fetchRecipes = async () => {
+      const token = Cookies.get("token");
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-single-recipes/${id}`
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-single-recipes/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch recipes");
@@ -60,9 +67,15 @@ export default function Home() {
   // -------- fetch categories --------------------- //
   useEffect(() => {
     const fetchCategories = async () => {
+      const token = Cookies.get("token");
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-categories`
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-categories`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         if (!response.ok) {
@@ -88,16 +101,16 @@ export default function Home() {
 
   useEffect(() => {
     if (selectedCategory) {
-      // const token = cookies.get("token"); 
+      const token = Cookies.get("token");
       const fetchRecipes = async () => {
         try {
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-recipes/${selectedCategory}`,
-             {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
           if (!response.ok) {
             throw new Error("Failed to fetch recipes");
@@ -119,46 +132,48 @@ export default function Home() {
     setSelectedCategory(category);
   };
 
-
   // add to favourites ///////
-  const handleAddFavourite = async (id: string, thumbnail: string, title: string, category: string)=>{
+  const handleAddFavourite = async (
+    id: string,
+    thumbnail: string,
+    title: string,
+    category: string
+  ) => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = Cookies.get("token");
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/add-favourites`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            userId,
+            receipeId: id,
+            thumbnail,
+            title,
+            category,
+          }),
+        }
+      );
 
- try {
-   const userId = "663f3e124ab40631f55c6d58"; // Hardcoded for now
+      if (!response.ok) {
+        const errorData = await response.json();
 
-   const response = await fetch(
-     `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/add-favourites`,
-     {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify({
-         userId,
-         receipeId: id,
-         thumbnail,
-         title,
-         category,
-       }),
-     }
-   );
+        toast.error(errorData?.error);
+      } else {
+        toast.success("Added to favourites");
+      }
 
-   if (!response.ok) {
-     const errorData = await response.json();
-     
-     toast.error(errorData?.error);
-   } else {
-
-    toast.success("Added to favourites");
-   }
-
-
-   const data = await response.json();
-   console.log(data.message); // Log success message
- } catch (error : any) {
-   console.error("Error adding recipe to favourites:", error.message);
- }
-  }
+      const data = await response.json();
+      console.log(data.message); // Log success message
+    } catch (error: any) {
+      console.error("Error adding recipe to favourites:", error.message);
+    }
+  };
 
   const style = {
     position: "absolute" as "absolute",

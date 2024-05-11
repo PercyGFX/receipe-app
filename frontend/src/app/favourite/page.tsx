@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { FavouriteType } from "../Utils/types";
 import Image from "next/image";
 import { Toaster, toast } from "react-hot-toast";
+import Cookies from "js-cookie";
 
 export default function Home() {
   const [favourites, setFavourites] = useState<FavouriteType[]>([]);
@@ -16,8 +17,14 @@ export default function Home() {
     const fetchCategories = async () => {
       try {
         const userId = localStorage.getItem("userId");
+        const token = Cookies.get("token");
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-favourites/${userId}`
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-favourites/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         if (!response.ok) {
@@ -39,25 +46,23 @@ export default function Home() {
 
   const handleRemoveFavourites = async (_id: string) => {
     try {
+      const token = Cookies.get("token");
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/remove-favourite/${_id}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
       if (!response.ok) {
-       
-
         toast.error("Failed to remove");
       } else {
         setRefreshFavorites(!refreshFavorites);
         toast.success("Removed from favourites ");
-
-       
       }
 
       const data = await response.json();

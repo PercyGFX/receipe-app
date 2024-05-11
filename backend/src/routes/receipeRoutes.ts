@@ -12,7 +12,7 @@ import {
 } from "../controllers/receipeController.js";
 
 // get categories
-router.get("/get-categories", getCategories);
+router.get("/get-categories",jwtauthenticateToken, getCategories);
 
 // get recipes by category
 
@@ -20,15 +20,15 @@ router.get("/get-recipes/:categoryName", jwtauthenticateToken, getReceipes);
 
 // get recipes by id
 
-router.get("/get-single-recipes/:receipeId", getSingleReceipes);
+router.get("/get-single-recipes/:receipeId",jwtauthenticateToken, getSingleReceipes);
 
 // add to faviurites
-router.post("/add-favourites", addToFavourites);
+router.post("/add-favourites",jwtauthenticateToken, addToFavourites);
 
 // get all favourites by userid
-router.get("/get-favourites/:userId", getFavouritesbyUser);
+router.get("/get-favourites/:userId",jwtauthenticateToken, getFavouritesbyUser);
 
 // remove favourite
-router.get("/remove-favourite/:id", removeFavouritesbyId);
+router.get("/remove-favourite/:id",jwtauthenticateToken, removeFavouritesbyId);
 
 export default router;
