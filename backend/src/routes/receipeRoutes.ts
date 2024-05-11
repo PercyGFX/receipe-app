@@ -5,8 +5,8 @@ import {
   getCategories,
   getSingleReceipes,
   getReceipes,
+  addToFavourites,
 } from "../controllers/receipeController.js";
-
 
 // get categories
 router.get("/get-categories", getCategories);
@@ -19,5 +19,7 @@ router.get("/get-recipes/:categoryName", getReceipes);
 
 router.get("/get-single-recipes/:receipeId", getSingleReceipes);
 
+// add to faviurites
+router.post("/add-favourites", addToFavourites);
 
 export default router;

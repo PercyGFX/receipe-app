@@ -7,6 +7,8 @@ import { CategoryType } from "./Utils/types";
 import Image from "next/image";
 import { ReceipeType } from "./Utils/types";
 import { SingleReceipeType } from "./Utils/types";
+import { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 export default function Home() {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -111,6 +113,41 @@ export default function Home() {
     setSelectedCategory(category);
   };
 
+
+  // add to favourites ///////
+  const handleAddFavourite = async (id: string)=>{
+
+ try {
+   const userId = "663f3e124ab40631f55c6d58"; // Hardcoded for now
+
+   const response = await fetch(
+     `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/add-favourites`,
+     {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       body: JSON.stringify({ userId, receipeId:id }),
+     }
+   );
+
+   if (!response.ok) {
+     const errorData = await response.json();
+     
+     toast.error(errorData?.error);
+   } else {
+
+    toast.success("Added to favourites");
+   }
+
+
+   const data = await response.json();
+   console.log(data.message); // Log success message
+ } catch (error : any) {
+   console.error("Error adding recipe to favourites:", error.message);
+ }
+  }
+
   const style = {
     position: "absolute" as "absolute",
     top: "50%",
@@ -127,6 +164,7 @@ export default function Home() {
     <main className="">
       <Header />
       <div className="flex justify-center">
+        <Toaster />
         <Modal open={open} onClose={handleClose}>
           <Box sx={style}>
             {singleReceipe.strInstructions ? (
@@ -243,7 +281,10 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-x-2 pt-2">
                       <span className="text-xs">{selectedCategory}</span>
-                      <FavoriteBorderIcon className="text-[#fe5c84]" />
+                      <FavoriteBorderIcon
+                        className="text-[#fe5c84] hover:cursor-pointer"
+                        onClick={() => handleAddFavourite(recipe.idMeal)}
+                      />
                     </div>
                     <p
                       className="font-semibold text-slate-700 hover:cursor-pointer"
