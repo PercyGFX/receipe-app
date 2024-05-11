@@ -6,7 +6,8 @@ import {
   getSingleReceipes,
   getReceipes,
   addToFavourites,
-  getFavouritesbyUser
+  getFavouritesbyUser,
+  removeFavouritesbyId
 } from "../controllers/receipeController.js";
 
 // get categories
@@ -27,6 +28,6 @@ router.post("/add-favourites", addToFavourites);
 router.get("/get-favourites/:userId", getFavouritesbyUser);
 
 // remove favourite
-router.get("/remove-favourite/:id", getFavouritesbyUser);
+router.get("/remove-favourite/:id", removeFavouritesbyId);
 
 export default router;
