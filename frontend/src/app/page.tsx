@@ -10,6 +10,8 @@ import { SingleReceipeType } from "./Utils/types";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
+import { BeatLoader } from "react-spinners";
+
 
 export default function Home() {
   const [categories, setCategories] = useState<CategoryType[]>([]);
@@ -223,7 +225,13 @@ export default function Home() {
                 )}
               </>
             ) : (
-              <p>Loading...</p>
+              <BeatLoader
+                color="#fe5c84"
+                loading={true}
+                size={20}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
             )}
           </Box>
         </Modal>
@@ -284,7 +292,15 @@ export default function Home() {
                 </div>
               ))
             ) : (
-              <div>Loading...</div>
+              <div>
+                <BeatLoader
+                  color="#fe5c84"
+                  loading={true}
+                  size={20}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                />
+              </div>
             )}
           </div>
 
@@ -308,6 +324,7 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-x-2 pt-2">
                       <span className="text-xs">{selectedCategory}</span>
+
                       <FavoriteBorderIcon
                         className="text-[#fe5c84] hover:cursor-pointer"
                         onClick={() =>
@@ -329,7 +346,15 @@ export default function Home() {
                   </div>
                 ))
               ) : (
-                <div className="empty-message">No recipes available</div>
+                <div className="empty-message flex justify-center">
+                  <BeatLoader
+                    color="#fe5c84"
+                    loading={true}
+                    size={20}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                </div>
               )}
             </div>
           </div>

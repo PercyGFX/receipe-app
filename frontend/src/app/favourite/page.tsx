@@ -108,7 +108,7 @@ export default function Home() {
                   </div>
                 ))
               ) : (
-                <div className="empty-message">No recipes available</div>
+                <div className="empty-message"></div>
               )}
               {/* recipe card */}
 
