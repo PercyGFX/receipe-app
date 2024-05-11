@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 // public URLs
-const PUBLIC_URLS = ["/login", "/register"];
+const PUBLIC_URLS = ["/login", "/register" ,'/logo.png'];
 
 export async function middleware(req: NextRequest) {
   // Get the requested URL
