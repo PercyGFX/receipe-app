@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-// yup validations
+// yup validations  //
 const validationSchema = Yup.object({
   email: Yup.string()
     .email("Invalid email address")
