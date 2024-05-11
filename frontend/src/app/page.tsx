@@ -115,7 +115,7 @@ export default function Home() {
 
 
   // add to favourites ///////
-  const handleAddFavourite = async (id: string)=>{
+  const handleAddFavourite = async (id: string, thumbnail: string, title: string, category: string)=>{
 
  try {
    const userId = "663f3e124ab40631f55c6d58"; // Hardcoded for now
@@ -127,7 +127,13 @@ export default function Home() {
        headers: {
          "Content-Type": "application/json",
        },
-       body: JSON.stringify({ userId, receipeId:id }),
+       body: JSON.stringify({
+         userId,
+         receipeId: id,
+         thumbnail,
+         title,
+         category,
+       }),
      }
    );
 
@@ -283,7 +289,14 @@ export default function Home() {
                       <span className="text-xs">{selectedCategory}</span>
                       <FavoriteBorderIcon
                         className="text-[#fe5c84] hover:cursor-pointer"
-                        onClick={() => handleAddFavourite(recipe.idMeal)}
+                        onClick={() =>
+                          handleAddFavourite(
+                            recipe.idMeal,
+                            recipe.strMealThumb,
+                            recipe.strMeal,
+                            selectedCategory as any
+                          )
+                        }
                       />
                     </div>
                     <p

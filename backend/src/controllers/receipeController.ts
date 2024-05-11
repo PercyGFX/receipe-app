@@ -84,13 +84,13 @@ export const getSingleReceipes = async (req: Request, res: Response) => {
 
 export const addToFavourites = async (req: Request, res: Response) => {
   try {
-    const { userId, receipeId } = req.body;
+    const { userId, receipeId, thumbnail, title, category } = req.body;
 
     // validations
-    if (!userId || !receipeId) {
+    if (!userId || !receipeId || !thumbnail || !title || !category) {
       return res
         .status(400)
-        .json({ error: "userId and receipeId are required" });
+        .json({ error: "userId, receipeId, thumbnail, title are required" });
     }
 
     // check if the user available
@@ -108,7 +108,13 @@ export const addToFavourites = async (req: Request, res: Response) => {
     }
 
     // create new
-    await FavouriteModel.create({ receipeId, user: userId });
+    await FavouriteModel.create({
+      receipeId,
+      thumbnail,
+      title,
+      user: userId,
+      category,
+    });
 
     return res
       .status(201)
@@ -117,7 +123,55 @@ export const addToFavourites = async (req: Request, res: Response) => {
     console.error("Error adding to favourites:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
+}
+
+// ---------------------------- getFavouritesbyUser ------------------------- //
+
+export const getFavouritesbyUser = async (req: Request, res: Response) => {
+   try {
+    
+     const { userId } = req.params;
+     // Check if userId is provided
+     if (!userId) {
+       return res.status(400).json({ error: "userId parameter is required" });
+     }
+
+     // Find favorite records related to the user
+     const favourites = await FavouriteModel.find({ user: userId });
+
+     return res.status(200).json(favourites);
+   } catch (error: any) {
+     console.error("Error fetching recipes:", error.message);
+     res.status(500).json({ error: "Internal Server Error" });
+   }
+};
+
+// ---------------------------- remove favourite by id ------------------------- //
+
+export const removeFavouritesbyId = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      // check id
+      if (!id) {
+        return res.status(400).json({ error: "id parameter is required" });
+      }
+
+      // remove
+      const removedFavourite = await FavouriteModel.findByIdAndDelete(id);
+
+      // no favourite found
+      if (!removedFavourite) {
+        return res.status(404).json({ error: "Favorite record not found" });
+      }
+
+      return res
+        .status(200)
+        .json({ message: "Favorite record removed successfully" });
+    } catch (error: any) {
+      console.error("Error removing favorite record:", error.message);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
 };
 
 
-;

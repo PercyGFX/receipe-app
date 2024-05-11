@@ -16,3 +16,14 @@ export type SingleReceipeType = {
   strMealThumb: string;
 };
 
+export type FavouriteType = {
+  _id: string;
+  receipeId: string;
+  thumbnail: string;
+  title: string;
+  category: string
+};
+
+
+
+
