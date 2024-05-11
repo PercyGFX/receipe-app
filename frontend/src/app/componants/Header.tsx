@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image';
 import LogoutIcon from "@mui/icons-material/Logout";
+import Link from 'next/link';
 
 type Props = {}
 
@@ -18,8 +19,13 @@ function Header({}: Props) {
           />
         </div>
         <div className="flex gap-x-6 uppercase">
-          <p>Home</p>
-          <p>favourites</p>
+          <p>
+            
+            <Link href="/">Home</Link>
+          </p>
+          <p>
+            <Link href="/favourite">favourites</Link>
+          </p>
         </div>
         <div>
           <LogoutIcon />
