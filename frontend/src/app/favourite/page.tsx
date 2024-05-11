@@ -15,7 +15,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const userId = "663f3e124ab40631f55c6d58";
+        const userId = localStorage.getItem("userId");
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-favourites/${userId}`
         );

@@ -47,7 +47,7 @@ export const login = async (req: Request, res: Response) => {
       expires: new Date(Date.now() + 3600000),
     });
 
-    res.status(200).json({ message: "User Login successful.", data: token });
+    res.status(200).json({ message: "User Login successful.", data: token, userId: user._id });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error." });
   }
@@ -98,11 +98,11 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-// jwt check
+// ---------------------- jwt check --------------------------------
 export const jwtcheck = async (req: Request, res: Response) => {
-  const token = req.cookies.jwt;
+  const { jwttoken } = req.params;
 
-  if (!token) {
+  if (!jwttoken) {
     return res.status(401).json({
       message: "Unauthorized",
     });
@@ -110,7 +110,7 @@ export const jwtcheck = async (req: Request, res: Response) => {
 
   try {
     //check if jwt valid
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET!);
+    const decodedToken = jwt.verify(jwttoken, process.env.JWT_SECRET!);
 
     res.status(200).json({
       message: "JWT verification successful.",

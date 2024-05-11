@@ -8,6 +8,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 // yup validations  //
 const validationSchema = Yup.object({
@@ -47,7 +48,11 @@ function Page() {
         } else {
           toast.success("Login Success");
           const data = await response.json();
-          localStorage.setItem("token", data.data);
+          //localStorage.setItem("token", data.data);
+          localStorage.setItem("userId", data.userId);
+
+          
+          Cookies.set("token", data.data);
           router.push("/");
         }
       } catch (error: any) {
