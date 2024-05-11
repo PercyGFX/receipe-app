@@ -17,7 +17,7 @@ const validationSchema = Yup.object({
   password: Yup.string().required("Password is required"),
 });
 
-function page() {
+function Page() {
   const router = useRouter();
 
   // formik
