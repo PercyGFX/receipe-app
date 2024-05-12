@@ -16,7 +16,11 @@ router.get("/get-categories",jwtauthenticateToken, getCategories);
 
 // get recipes by category
 
-router.get("/get-recipes/:categoryName", jwtauthenticateToken, getReceipes);
+router.get(
+  "/get-recipes/:categoryName/:userId",
+  jwtauthenticateToken,
+  getReceipes
+);
 
 // get recipes by id
 

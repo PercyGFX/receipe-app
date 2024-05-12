@@ -6,7 +6,8 @@ export type CategoryType = {
 export type ReceipeType = {
   strMeal: string;
   strMealThumb: string;
-  idMeal: string
+  idMeal: string;
+  isFavourite: boolean
 };
 
 export type SingleReceipeType = {

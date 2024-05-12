@@ -29,7 +29,7 @@ export const getCategories = async (req: Request, res: Response) => {
 //------------- get receipes -------------------------------//
 export const getReceipes = async (req: Request, res: Response) => {
   try {
-    const { categoryName } = req.params;
+    const { categoryName, userId } = req.params;
 
     const response = await fetch(
       `https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoryName}`
@@ -43,10 +43,28 @@ export const getReceipes = async (req: Request, res: Response) => {
 
     if (!data.meals) {
       res.status(500).json({ error: "Category Not Found" });
-      return
+      return;
     }
 
-    res.json(data);
+    // Check if the user exists
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    
+  // chnage fetch data to new one with is favurite
+    const userFavorites = await FavouriteModel.find({ user: userId });
+
+ 
+    const mealsWithFavorites = data.meals.map((meal: any) => {
+      const isFavorite = userFavorites.some(
+        (fav: any) => fav.receipeId === meal.idMeal
+      );
+      return { ...meal, isFavourite: isFavorite };
+    });
+
+    res.json({ meals: mealsWithFavorites });
   } catch (error: any) {
     console.error("Error fetching recipes:", error.message);
     res.status(500).json({ error: "Internal Server Error" });

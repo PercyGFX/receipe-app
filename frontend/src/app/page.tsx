@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { BeatLoader } from "react-spinners";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 
 export default function Home() {
@@ -23,6 +24,7 @@ export default function Home() {
     strYoutube: "",
     strMealThumb: "",
   });
+   const [refreshFavorites, setRefreshFavorites] = useState<boolean>(false);
 
   const [open, setOpen] = useState(false);
 
@@ -104,10 +106,11 @@ export default function Home() {
   useEffect(() => {
     if (selectedCategory) {
       const token = Cookies.get("token");
+      const userId = localStorage.getItem("userId");
       const fetchRecipes = async () => {
         try {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-recipes/${selectedCategory}`,
+            `${process.env.NEXT_PUBLIC_BACKEND_API}/receipe/get-recipes/${selectedCategory}/${userId}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -127,7 +130,7 @@ export default function Home() {
 
       fetchRecipes();
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, refreshFavorites]);
 
   // handle selected category
   const handleSelectCategory = (category: string) => {
@@ -167,6 +170,7 @@ export default function Home() {
 
         toast.error(errorData?.error);
       } else {
+        setRefreshFavorites(!refreshFavorites);
         toast.success("Added to favourites");
       }
 
@@ -324,18 +328,35 @@ export default function Home() {
                     </div>
                     <div className="flex items-center gap-x-2 pt-2">
                       <span className="text-xs">{selectedCategory}</span>
-
-                      <FavoriteBorderIcon
-                        className="text-[#fe5c84] hover:cursor-pointer"
-                        onClick={() =>
-                          handleAddFavourite(
-                            recipe.idMeal,
-                            recipe.strMealThumb,
-                            recipe.strMeal,
-                            selectedCategory as any
-                          )
-                        }
-                      />
+                      {recipe.isFavourite ? (
+                        <>
+                          <FavoriteIcon
+                            className="text-[#fe5c84] hover:cursor-pointer"
+                            onClick={() =>
+                              handleAddFavourite(
+                                recipe.idMeal,
+                                recipe.strMealThumb,
+                                recipe.strMeal,
+                                selectedCategory as any
+                              )
+                            }
+                          />
+                        </>
+                      ) : (
+                        <>
+                          <FavoriteBorderIcon
+                            className="text-[#fe5c84] hover:cursor-pointer"
+                            onClick={() =>
+                              handleAddFavourite(
+                                recipe.idMeal,
+                                recipe.strMealThumb,
+                                recipe.strMeal,
+                                selectedCategory as any
+                              )
+                            }
+                          />
+                        </>
+                      )}
                     </div>
                     <p
                       className="font-semibold text-slate-700 hover:cursor-pointer"
